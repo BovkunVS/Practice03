@@ -1,0 +1,450 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ModelExibition.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="ModelExibitionStoreContainer">
+    <EntitySet Name="OwnerSet" EntityType="ModelExibition.Store.OwnerSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="CompanySet" EntityType="ModelExibition.Store.CompanySet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ProductsSet" EntityType="ModelExibition.Store.ProductsSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ContractSet" EntityType="ModelExibition.Store.ContractSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="AddressSet" EntityType="ModelExibition.Store.AddressSet" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="AddressOwner" Association="ModelExibition.Store.AddressOwner">
+      <End Role="Address" EntitySet="AddressSet" />
+      <End Role="Owner" EntitySet="OwnerSet" />
+    </AssociationSet>
+    <AssociationSet Name="AddressCompany" Association="ModelExibition.Store.AddressCompany">
+      <End Role="Address" EntitySet="AddressSet" />
+      <End Role="Company" EntitySet="CompanySet" />
+    </AssociationSet>
+    <AssociationSet Name="CompanyProducts" Association="ModelExibition.Store.CompanyProducts">
+      <End Role="Company" EntitySet="CompanySet" />
+      <End Role="Products" EntitySet="ProductsSet" />
+    </AssociationSet>
+    <AssociationSet Name="CompanyContract" Association="ModelExibition.Store.CompanyContract">
+      <End Role="Company" EntitySet="CompanySet" />
+      <End Role="Contract" EntitySet="ContractSet" />
+    </AssociationSet>
+    <AssociationSet Name="ProductsContract" Association="ModelExibition.Store.ProductsContract">
+      <End Role="Products" EntitySet="ProductsSet" />
+      <End Role="Contract" EntitySet="ContractSet" />
+    </AssociationSet>
+    <AssociationSet Name="OwnerCompany" Association="ModelExibition.Store.OwnerCompany">
+      <End Role="Owner" EntitySet="OwnerSet" />
+      <End Role="Company" EntitySet="CompanySet" />
+    </AssociationSet>
+    <AssociationSet Name="CompanyContract1" Association="ModelExibition.Store.CompanyContract1">
+      <End Role="Company" EntitySet="CompanySet" />
+      <End Role="Contract" EntitySet="ContractSet" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="OwnerSet">
+    <Key>
+      <PropertyRef Name="id_owner" />
+    </Key>
+    <Property Name="id_owner" Type="int" StoreGeneratedPattern="Identity" Nullable="false" DefaultValue="1" />
+    <Property Name="last_name" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="first_name" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="middle_name" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="id_home_address" Type="int" Nullable="false" />
+    <Property Name="telephone" Type="nvarchar" Nullable="false" MaxLength="20" />
+  </EntityType>
+  <EntityType Name="CompanySet">
+    <Key>
+      <PropertyRef Name="id_company" />
+    </Key>
+    <Property Name="id_company" Type="nchar" Nullable="false" MaxLength="10" />
+    <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="id_physical_address" Type="int" Nullable="false" />
+    <Property Name="id_owner" Type="int" Nullable="false" DefaultValue="1" />
+  </EntityType>
+  <EntityType Name="ProductsSet">
+    <Key>
+      <PropertyRef Name="id_products" />
+    </Key>
+    <Property Name="id_products" Type="nchar" Nullable="false" MaxLength="10" />
+    <Property Name="id_company" Type="nchar" Nullable="false" MaxLength="10" />
+    <Property Name="product_type" Type="nvarchar" Nullable="false" MaxLength="20" />
+    <Property Name="quantity" Type="int" Nullable="false" />
+    <Property Name="unit_price" Type="decimal" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ContractSet">
+    <Key>
+      <PropertyRef Name="id_contract" />
+    </Key>
+    <Property Name="id_contract" Type="int" StoreGeneratedPattern="Identity" Nullable="false" DefaultValue="10000" />
+    <Property Name="id_company_recipient" Type="nchar" Nullable="false" MaxLength="10" />
+    <Property Name="id_company_supplier" Type="nchar" Nullable="false" MaxLength="10" />
+    <Property Name="id_product" Type="nchar" Nullable="false" MaxLength="10" />
+    <Property Name="date_of_conclusion" Type="datetime" Nullable="false" />
+    <Property Name="deadline" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="AddressSet">
+    <Key>
+      <PropertyRef Name="id_address" />
+    </Key>
+    <Property Name="id_address" Type="int" StoreGeneratedPattern="Identity" Nullable="false" DefaultValue="1000" />
+    <Property Name="city" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="street" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="house" Type="int" Nullable="false" />
+    <Property Name="apartment" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="AddressOwner">
+    <End Role="Address" Type="ModelExibition.Store.AddressSet" Multiplicity="1" />
+    <End Role="Owner" Type="ModelExibition.Store.OwnerSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Address">
+        <PropertyRef Name="id_address" />
+      </Principal>
+      <Dependent Role="Owner">
+        <PropertyRef Name="id_home_address" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="AddressCompany">
+    <End Role="Address" Type="ModelExibition.Store.AddressSet" Multiplicity="1" />
+    <End Role="Company" Type="ModelExibition.Store.CompanySet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Address">
+        <PropertyRef Name="id_address" />
+      </Principal>
+      <Dependent Role="Company">
+        <PropertyRef Name="id_physical_address" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="CompanyProducts">
+    <End Role="Company" Type="ModelExibition.Store.CompanySet" Multiplicity="1" />
+    <End Role="Products" Type="ModelExibition.Store.ProductsSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Company">
+        <PropertyRef Name="id_company" />
+      </Principal>
+      <Dependent Role="Products">
+        <PropertyRef Name="id_company" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="CompanyContract">
+    <End Role="Company" Type="ModelExibition.Store.CompanySet" Multiplicity="1" />
+    <End Role="Contract" Type="ModelExibition.Store.ContractSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Company">
+        <PropertyRef Name="id_company" />
+      </Principal>
+      <Dependent Role="Contract">
+        <PropertyRef Name="id_company_supplier" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ProductsContract">
+    <End Role="Products" Type="ModelExibition.Store.ProductsSet" Multiplicity="1" />
+    <End Role="Contract" Type="ModelExibition.Store.ContractSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Products">
+        <PropertyRef Name="id_products" />
+      </Principal>
+      <Dependent Role="Contract">
+        <PropertyRef Name="id_product" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="OwnerCompany">
+    <End Role="Owner" Type="ModelExibition.Store.OwnerSet" Multiplicity="1" />
+    <End Role="Company" Type="ModelExibition.Store.CompanySet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Owner">
+        <PropertyRef Name="id_owner" />
+      </Principal>
+      <Dependent Role="Company">
+        <PropertyRef Name="id_owner" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="CompanyContract1">
+    <End Role="Company" Type="ModelExibition.Store.CompanySet" Multiplicity="1" />
+    <End Role="Contract" Type="ModelExibition.Store.ContractSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Company">
+        <PropertyRef Name="id_company" />
+      </Principal>
+      <Dependent Role="Contract">
+        <PropertyRef Name="id_company_recipient" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="ModelExibition" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="ModelExibitionContainer" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="OwnerSet" EntityType="ModelExibition.Owner" />
+          <EntitySet Name="CompanySet" EntityType="ModelExibition.Company" />
+          <EntitySet Name="ProductsSet" EntityType="ModelExibition.Products" />
+          <EntitySet Name="ContractSet" EntityType="ModelExibition.Contract" />
+          <EntitySet Name="AddressSet" EntityType="ModelExibition.Address" />
+          <AssociationSet Name="AddressOwner" Association="ModelExibition.AddressOwner">
+            <End Role="Address" EntitySet="AddressSet" />
+            <End Role="Owner" EntitySet="OwnerSet" />
+          </AssociationSet>
+          <AssociationSet Name="AddressCompany" Association="ModelExibition.AddressCompany">
+            <End Role="Address" EntitySet="AddressSet" />
+            <End Role="Company" EntitySet="CompanySet" />
+          </AssociationSet>
+          <AssociationSet Name="CompanyProducts" Association="ModelExibition.CompanyProducts">
+            <End Role="Company" EntitySet="CompanySet" />
+            <End Role="Products" EntitySet="ProductsSet" />
+          </AssociationSet>
+          <AssociationSet Name="CompanyContract" Association="ModelExibition.CompanyContract">
+            <End Role="Company" EntitySet="CompanySet" />
+            <End Role="Contract" EntitySet="ContractSet" />
+          </AssociationSet>
+          <AssociationSet Name="ProductsContract" Association="ModelExibition.ProductsContract">
+            <End Role="Products" EntitySet="ProductsSet" />
+            <End Role="Contract" EntitySet="ContractSet" />
+          </AssociationSet>
+          <AssociationSet Name="OwnerCompany" Association="ModelExibition.OwnerCompany">
+            <End Role="Owner" EntitySet="OwnerSet" />
+            <End Role="Company" EntitySet="CompanySet" />
+          </AssociationSet>
+          <AssociationSet Name="CompanyContract1" Association="ModelExibition.CompanyContract1">
+            <End Role="Company" EntitySet="CompanySet" />
+            <End Role="Contract" EntitySet="ContractSet" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Address">
+          <Key>
+            <PropertyRef Name="id_address" />
+          </Key>
+          <Property Name="id_address" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" DefaultValue="1000" />
+          <Property Name="city" Type="String" Nullable="false" Unicode="true" MaxLength="50" />
+          <Property Name="street" Type="String" Nullable="false" MaxLength="50" Unicode="true" />
+          <Property Name="house" Type="Int32" Nullable="false" />
+          <Property Name="apartment" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Owner" Relationship="ModelExibition.AddressOwner" FromRole="Address" ToRole="Owner" />
+          <NavigationProperty Name="Company" Relationship="ModelExibition.AddressCompany" FromRole="Address" ToRole="Company" />
+        </EntityType>
+        <EntityType Name="Owner">
+          <Key>
+            <PropertyRef Name="id_owner" />
+          </Key>
+          <Property Name="id_owner" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" DefaultValue="1" ConcurrencyMode="None" />
+          <Property Name="last_name" Type="String" Nullable="false" MaxLength="50" Unicode="true" />
+          <Property Name="first_name" Type="String" Nullable="false" MaxLength="50" Unicode="true" />
+          <Property Name="middle_name" Type="String" Nullable="false" MaxLength="50" Unicode="true" />
+          <Property Name="id_home_address" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Name="telephone" Type="String" Nullable="false" MaxLength="20" Unicode="true" />
+          <NavigationProperty Name="Address" Relationship="ModelExibition.AddressOwner" FromRole="Owner" ToRole="Address" />
+          <NavigationProperty Name="Company" Relationship="ModelExibition.OwnerCompany" FromRole="Owner" ToRole="Company" />
+        </EntityType>
+        <EntityType Name="Company">
+          <Key>
+            <PropertyRef Name="id_company" />
+          </Key>
+          <Property Name="id_company" Type="String" Nullable="false" annotation:StoreGeneratedPattern="None" FixedLength="true" MaxLength="10" Unicode="true" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="50" Unicode="true" />
+          <NavigationProperty Name="Address" Relationship="ModelExibition.AddressCompany" FromRole="Company" ToRole="Address" />
+          <NavigationProperty Name="Products" Relationship="ModelExibition.CompanyProducts" FromRole="Company" ToRole="Products" />
+          <NavigationProperty Name="Contract" Relationship="ModelExibition.CompanyContract" FromRole="Company" ToRole="Contract" />
+          <NavigationProperty Name="Contract1" Relationship="ModelExibition.CompanyContract1" FromRole="Company" ToRole="Contract" />
+          <NavigationProperty Name="Owner" Relationship="ModelExibition.OwnerCompany" FromRole="Company" ToRole="Owner" />
+          <Property Name="id_physical_address" Type="Int32" Nullable="false" />
+          <Property Name="id_owner" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="None" DefaultValue="1" />
+        </EntityType>
+        <EntityType Name="Products">
+          <Key>
+            <PropertyRef Name="id_products" />
+          </Key>
+          <Property Name="id_products" Type="String" Nullable="false" annotation:StoreGeneratedPattern="None" FixedLength="true" MaxLength="10" Unicode="true" />
+          <Property Name="id_company" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="product_type" Type="String" Nullable="false" MaxLength="20" />
+          <Property Name="quantity" Type="Int32" Nullable="false" />
+          <Property Name="unit_price" Type="Decimal" Nullable="false" />
+          <NavigationProperty Name="Company" Relationship="ModelExibition.CompanyProducts" FromRole="Products" ToRole="Company" />
+          <NavigationProperty Name="Contract" Relationship="ModelExibition.ProductsContract" FromRole="Products" ToRole="Contract" />
+        </EntityType>
+        <EntityType Name="Contract">
+          <Key>
+            <PropertyRef Name="id_contract" />
+          </Key>
+          <Property Name="id_contract" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" DefaultValue="10000" />
+          <Property Name="id_company_recipient" Type="String" Nullable="false" FixedLength="true" Unicode="true" MaxLength="10" />
+          <Property Name="id_company_supplier" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="id_product" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="date_of_conclusion" Type="DateTime" Nullable="false" />
+          <Property Name="deadline" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Company" Relationship="ModelExibition.CompanyContract" FromRole="Contract" ToRole="Company" />
+          <NavigationProperty Name="Company1" Relationship="ModelExibition.CompanyContract1" FromRole="Contract" ToRole="Company" />
+          <NavigationProperty Name="Products" Relationship="ModelExibition.ProductsContract" FromRole="Contract" ToRole="Products" />
+        </EntityType>
+        <Association Name="AddressOwner">
+          <End Type="ModelExibition.Address" Role="Address" Multiplicity="1" />
+          <End Type="ModelExibition.Owner" Role="Owner" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Address">
+              <PropertyRef Name="id_address" />
+            </Principal>
+            <Dependent Role="Owner">
+              <PropertyRef Name="id_home_address" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AddressCompany">
+          <End Type="ModelExibition.Address" Role="Address" Multiplicity="1" />
+          <End Type="ModelExibition.Company" Role="Company" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Address">
+              <PropertyRef Name="id_address" />
+            </Principal>
+            <Dependent Role="Company">
+              <PropertyRef Name="id_physical_address" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="CompanyProducts">
+          <End Type="ModelExibition.Company" Role="Company" Multiplicity="1" />
+          <End Type="ModelExibition.Products" Role="Products" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="id_company" />
+            </Principal>
+            <Dependent Role="Products">
+              <PropertyRef Name="id_company" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="CompanyContract">
+          <End Type="ModelExibition.Company" Role="Company" Multiplicity="1" />
+          <End Type="ModelExibition.Contract" Role="Contract" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="id_company" />
+            </Principal>
+            <Dependent Role="Contract">
+              <PropertyRef Name="id_company_supplier" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ProductsContract">
+          <End Type="ModelExibition.Products" Role="Products" Multiplicity="1" />
+          <End Type="ModelExibition.Contract" Role="Contract" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="id_products" />
+            </Principal>
+            <Dependent Role="Contract">
+              <PropertyRef Name="id_product" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="OwnerCompany">
+          <End Type="ModelExibition.Owner" Role="Owner" Multiplicity="1" />
+          <End Type="ModelExibition.Company" Role="Company" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Owner">
+              <PropertyRef Name="id_owner" />
+            </Principal>
+            <Dependent Role="Company">
+              <PropertyRef Name="id_owner" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="CompanyContract1">
+          <End Type="ModelExibition.Company" Role="Company" Multiplicity="1" />
+          <End Type="ModelExibition.Contract" Role="Contract" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="id_company" />
+            </Principal>
+            <Dependent Role="Contract">
+              <PropertyRef Name="id_company_recipient" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ModelExibitionStoreContainer" CdmEntityContainer="ModelExibitionContainer">
+    <EntitySetMapping Name="OwnerSet">
+      <EntityTypeMapping TypeName="IsTypeOf(ModelExibition.Owner)">
+        <MappingFragment StoreEntitySet="OwnerSet">
+          <ScalarProperty Name="id_owner" ColumnName="id_owner" />
+          <ScalarProperty Name="last_name" ColumnName="last_name" />
+          <ScalarProperty Name="first_name" ColumnName="first_name" />
+          <ScalarProperty Name="middle_name" ColumnName="middle_name" />
+          <ScalarProperty Name="id_home_address" ColumnName="id_home_address" />
+          <ScalarProperty Name="telephone" ColumnName="telephone" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CompanySet">
+      <EntityTypeMapping TypeName="IsTypeOf(ModelExibition.Company)">
+        <MappingFragment StoreEntitySet="CompanySet">
+          <ScalarProperty Name="id_company" ColumnName="id_company" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="id_physical_address" ColumnName="id_physical_address" />
+          <ScalarProperty Name="id_owner" ColumnName="id_owner" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ProductsSet">
+      <EntityTypeMapping TypeName="IsTypeOf(ModelExibition.Products)">
+        <MappingFragment StoreEntitySet="ProductsSet">
+          <ScalarProperty Name="id_products" ColumnName="id_products" />
+          <ScalarProperty Name="id_company" ColumnName="id_company" />
+          <ScalarProperty Name="product_type" ColumnName="product_type" />
+          <ScalarProperty Name="quantity" ColumnName="quantity" />
+          <ScalarProperty Name="unit_price" ColumnName="unit_price" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ContractSet">
+      <EntityTypeMapping TypeName="IsTypeOf(ModelExibition.Contract)">
+        <MappingFragment StoreEntitySet="ContractSet">
+          <ScalarProperty Name="id_contract" ColumnName="id_contract" />
+          <ScalarProperty Name="id_company_recipient" ColumnName="id_company_recipient" />
+          <ScalarProperty Name="id_company_supplier" ColumnName="id_company_supplier" />
+          <ScalarProperty Name="id_product" ColumnName="id_product" />
+          <ScalarProperty Name="date_of_conclusion" ColumnName="date_of_conclusion" />
+          <ScalarProperty Name="deadline" ColumnName="deadline" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AddressSet">
+      <EntityTypeMapping TypeName="IsTypeOf(ModelExibition.Address)">
+        <MappingFragment StoreEntitySet="AddressSet">
+          <ScalarProperty Name="id_address" ColumnName="id_address" />
+          <ScalarProperty Name="city" ColumnName="city" />
+          <ScalarProperty Name="street" ColumnName="street" />
+          <ScalarProperty Name="house" ColumnName="house" />
+          <ScalarProperty Name="apartment" ColumnName="apartment" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

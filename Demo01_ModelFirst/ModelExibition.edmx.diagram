@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="92681295b834427db4a9eca46bb3800a" Name="Diagram1" >
+        <EntityTypeShape EntityType="ModelExibition.Address" Width="1.625" PointX="0.875" PointY="0.5" />
+        <EntityTypeShape EntityType="ModelExibition.Owner" Width="1.625" PointX="0.875" PointY="3.25" />
+        <EntityTypeShape EntityType="ModelExibition.Company" Width="1.5" PointX="3.875" PointY="2" />
+        <EntityTypeShape EntityType="ModelExibition.Products" Width="1.5" PointX="6.375" PointY="0.5" />
+        <EntityTypeShape EntityType="ModelExibition.Contract" Width="1.5" PointX="6.5" PointY="3.25" />
+        <AssociationConnector Association="ModelExibition.AddressOwner" />
+        <AssociationConnector Association="ModelExibition.AddressCompany" ></AssociationConnector>
+        <AssociationConnector Association="ModelExibition.CompanyProducts" ManuallyRouted="false" >
+        </AssociationConnector>
+        <AssociationConnector Association="ModelExibition.CompanyContract" />
+        <AssociationConnector Association="ModelExibition.ProductsContract" />
+        <AssociationConnector Association="ModelExibition.OwnerCompany" />
+        <AssociationConnector Association="ModelExibition.CompanyContract1" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
