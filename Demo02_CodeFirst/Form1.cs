@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using Demo01_ModelFirst;
 
-namespace Demo01_ModelFirst
+namespace Demo02_CodeFirst
 {
     public partial class Form1 : Form
     {
@@ -12,7 +13,7 @@ namespace Demo01_ModelFirst
             InitializeComponent();
         }
 
-        private void insertOwnerToolStripMenuItem_Click(object sender, System.EventArgs e)
+        private void insertOwnerToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ClearMenuChecks();
             insertOwnerToolStripMenuItem.Checked = true;
@@ -23,7 +24,7 @@ namespace Demo01_ModelFirst
             toolStripStatusLabel.Text = "Через пробел: <last_name> <first_name> <middle_name> <id_home_address> <telephone>";
         }
 
-        private void alterOwnerToolStripMenuItem_Click(object sender, System.EventArgs e)
+        private void alterOwnerToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ClearMenuChecks();
             alterOwnerToolStripMenuItem.Checked = true;
@@ -34,7 +35,7 @@ namespace Demo01_ModelFirst
             toolStripStatusLabel.Text = "Через пробел: <id_owner> <last_name> <first_name> <middle_name> <id_home_address> <telephone>";
         }
 
-        private void deleteOwnerToolStripMenuItem_Click(object sender, System.EventArgs e)
+        private void deleteOwnerToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ClearMenuChecks();
             deleteOwnerToolStripMenuItem.Checked = true;
@@ -77,21 +78,21 @@ namespace Demo01_ModelFirst
                 MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                 // Логгирование ошибки
-                Logger.Log("Demo01_ModelFirst", "ArgumentException: " + ex.Message);
+                Logger.Log("Demo02_CodeFirst", "ArgumentException: " + ex.Message);
             }
             catch (FormatException ex)
             {
                 MessageBox.Show("Ошибка при преобразовании числа: " + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                
+
                 // Логгирование ошибки
-                Logger.Log("Demo01_ModelFirst", "FormatException: " + ex.Message);
+                Logger.Log("Demo02_CodeFirst", "FormatException: " + ex.Message);
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Произошла ошибка:" + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                
+
                 // Логгирование ошибки
-                Logger.Log("Demo01_ModelFirst", "Exception: " + ex.Message);
+                Logger.Log("Demo02_CodeFirst", "Exception: " + ex.Message);
             }
         }
 
@@ -115,24 +116,31 @@ namespace Demo01_ModelFirst
 
             string telephone = parameters[4];
 
-            // Создание нового объекта владельца и сохранение его в бд
+            // Создание нового объекта владельца
+            var newOwner = new Owner
+            {
+                last_name = lastName,
+                first_name = firstName,
+                middle_name = middleName,
+                id_home_address = idHomeAddress,
+                telephone = telephone
+            };
+
             using (var dbContext = new ModelExibitionContainer())
             {
-                var newOwner = new Owner
+                try
                 {
-                    last_name = lastName,
-                    first_name = firstName,
-                    middle_name = middleName,
-                    id_home_address = idHomeAddress,
-                    telephone = telephone
-                };
-
-                dbContext.OwnerSet.Add(newOwner);
-                dbContext.SaveChanges();
-                ShowOwnerlines(dbContext.OwnerSet.ToList(), rtbResult, "\nДанные после добавления:\n");
+                    dbContext.OwnerSet.Add(newOwner);
+                    dbContext.SaveChanges();
+                    ShowOwnerlines(dbContext.OwnerSet.ToList(), rtbResult, "\nДанные после добавления:\n");
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show("Произошла ошибка:" + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
 
                 // Логгирование операции
-                Logger.Log("Demo01_ModelFirst", "Добавлен новый владелец: " + lastName + " " + firstName + " " + middleName);
+                Logger.Log("Demo02_CodeFirst", "Добавлен новый владелец: " + lastName + " " + firstName + " " + middleName);
             }
         }
 
@@ -188,7 +196,7 @@ namespace Demo01_ModelFirst
                 ShowOwnerlines(dbContext.OwnerSet.ToList(), rtbResult, "\nДанные после редактирования:\n");
 
                 // Логгирование операции
-                Logger.Log("Demo01_ModelFirst", "Отредактирован владелец с id: " + idOwner);
+                Logger.Log("Demo02_CodeFirst", "Отредактирован владелец с id: " + idOwner);
             }
         }
 
@@ -219,7 +227,7 @@ namespace Demo01_ModelFirst
                 ShowOwnerlines(dbContext.OwnerSet.ToList(), rtbResult, "\nДанные после удаления владельца:\n");
 
                 // Логгирование операции
-                Logger.Log("Demo01_ModelFirst", "Удален владелец с id: " + idOwner);
+                Logger.Log("Demo02_CodeFirst", "Удален владелец с id: " + idOwner);
             }
         }
 
@@ -238,5 +246,6 @@ namespace Demo01_ModelFirst
             alterOwnerToolStripMenuItem.Checked = false;
             deleteOwnerToolStripMenuItem.Checked = false;
         }
+
     }
 }

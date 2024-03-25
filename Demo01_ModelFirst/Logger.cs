@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Demo01_ModelFirst
 {
-    internal class Logger
+    public class Logger
     {
         private static readonly string logFilePath = @"C:\Users\PC\source\repos\Practice03\Log_info.txt";
 
